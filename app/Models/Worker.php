@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\CreatedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,12 +14,16 @@ class Worker extends Model
 
     protected $guarded = false;
 
-    protected static function booted(){
-
+    protected static function booted()
+    {
         static::created(function ($model){
-            Profile::create([
-            'worker_id' => $model->id
-            ]);
+            event(new CreatedEvent($model));
+        });
+
+        static::updated(function ($model) {
+            if ($model->wasChanged() && $model->getOriginal('age') != $model->getAttributes()['age']) {
+                dd(1111111);
+            }
         });
     }
 

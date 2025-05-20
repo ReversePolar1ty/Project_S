@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\CreatedEvent;
+use App\Listeners\CreateProfileListener;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

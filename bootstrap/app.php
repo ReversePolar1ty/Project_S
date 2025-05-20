@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\CreatedEvent;
+use App\Listeners\CreateProfileListener;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,9 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })
-//    ->withEvents([
-//        App\Events\CreatedEvent::class => [
-//            App\Listeners\CreatedProfileListener::class,
-//        ],
-//    ])
+    ->withEvents([
+        //
+    ])
     ->create();
