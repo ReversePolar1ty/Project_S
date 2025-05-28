@@ -3,7 +3,7 @@
 <div>
     <hr>
         <div>
-            <form action="{{route('worker.update', $worker->id)}}" method="post">
+            <form action="{{route('workers.update', $worker->id)}}" method="post">
                 @csrf
                 @method('Patch')
                 <div style="margin-bottom: 15px;"><input type="text" name="name" placeholder="Имя" value="{{old('name') ?? $worker->name}}">

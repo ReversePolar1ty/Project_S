@@ -46,7 +46,7 @@ class   WorkerController extends Controller
             $workerQuery->where('is_married', true);
         }
 
-        $workers = $workerQuery->paginate(4);
+        $workers = $workerQuery->paginate(10);
 
         return view('worker.index', compact('workers'));
     }
@@ -69,37 +69,44 @@ class   WorkerController extends Controller
     //ЗАПИСЬ ДАННЫХ НА СТОРОНЕ СЕРВЕРА
     public function store(StoreRequest $request)
     {
+        $this->authorize('create', Worker::class);
+
         $data = $request->validated();
         $data['is_married'] = isset($data['is_married']);
         Worker::create($data);
-        return redirect()->route('worker.index');
+        return redirect()->route('workers.index');
     }
 
 
     //ОБНОВЛЕНИЕ ДАННЫХ НА СТОРОНЕ ПОЛЬЗОВАТЕЛЯ
     public function edit(Worker $worker)
     {
+        $this->authorize('update', $worker);
 
         return view('worker.edit', compact('worker'));
     }
 
 
     //ОБНОВЛЕНИЕ ДАННЫХ НА СТОРОНЕ СЕРВЕРА
-    public function update(UpdateRequest $request, Worker $worker){
+    public function update(UpdateRequest $request, Worker $worker)
+    {
+        $this->authorize('update', $worker);
 
         $data = $request->validated();
         $data['is_married'] = isset($data['is_married']);
 
         $worker->update($data);
 
-        return redirect()->route('worker.show', $worker->id);
+        return redirect()->route('workers.show', $worker->id);
     }
 
 
-    public function delete(Worker $worker){
+    public function destroy(Worker $worker)
+    {
+        $this->authorize('delete', $worker);
 
         $worker->delete();
-        return redirect()->route('worker.index');
+        return redirect()->route('workers.index');
     }
 }
 

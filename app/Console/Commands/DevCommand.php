@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\SomeJob;
 use App\Models\Department;
 use Illuminate\Console\Command;
 use App\Models\Worker;
@@ -34,10 +35,8 @@ class DevCommand extends Command
 
     public function handle()
     {
-        $worker = Worker::find(1);
-        $worker->update([
-            'age' => '35.000',
-        ]);
+        Worker::onlyTrashed()->restore();
+        return 0;
     }
 
 }

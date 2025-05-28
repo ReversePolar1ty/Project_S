@@ -1,12 +1,14 @@
 @extends('layout.main')
 @section('content')
 <div>
-    <div>
-        <a href="{{route('worker.create')}}">Добавить</a>
-    </div>
+    @can('create', \App\Models\Worker::class)
+        <div>
+            <a href="{{route('workers.create')}}">Добавить</a>
+        </div>
+    @endcan
     <hr>
     <div>
-        <form action="{{route('worker.index')}}">
+        <form action="{{route('workers.index')}}">
             <input type="text" name="name" placeholder="Имя" value="{{request()->get('name')}}">
             <input type="text" name="surname" placeholder="Фамилия" value="{{request()->get('surname')}}">
             <input type="text" name="email" placeholder="Email" value="{{request()->get('email')}}">
@@ -16,7 +18,7 @@
             <input id="isMarried" type="checkbox" name="is_married" {{request()->get('is_married')=='on' ? 'checked' : ''}}>
             <label for="isMarried"></label>
             <input type="submit">
-            <a href="{{route('worker.index')}}">Сбросить</a>
+            <a href="{{route('workers.index')}}">Сбросить</a>
         </form>
     </div>
     <hr>
@@ -29,18 +31,23 @@
             <div>О себе: {{$worker -> description}}</div>
             <div>IsMarried: {{$worker -> is_married}}</div>
             <div>
-                <a href="{{route ('worker.show', $worker -> id)}}">Просмотреть</a>
+                <a href="{{route ('workers.show', $worker -> id)}}">Просмотреть</a>
             </div>
-            <div>
-                <a href="{{route ('worker.edit', $worker -> id)}}">Редактировать</a>
-            </div>
-            <div>
-                <form action="{{route('worker.delete', $worker->id)}}" method="post">
-                    @csrf
-                    @method('Delete')
-                    <input type="submit" value="Удалить">
-                </form>
-            </div>
+            @can('update', $worker)
+                <div>
+                    <a href="{{route ('workers.edit', $worker -> id)}}">Редактировать</a>
+                </div>
+            @endcan
+
+            @can('delete', $worker)
+                <div>
+                    <form action="{{route('workers.destroy', $worker->id)}}" method="post">
+                        @csrf
+                        @method('Delete')
+                        <input type="submit" value="Удалить">
+                    </form>
+                </div>
+            @endcan
         </div>
         <hr>
     @endforeach

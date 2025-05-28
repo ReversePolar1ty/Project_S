@@ -9,18 +9,22 @@
             <div>Description: {{$worker -> description}}</div>
             <div>IsMarried: {{$worker -> is_married}}</div>
             <div>
-                <a href="{{route ('worker.index')}}">Назад</a>
+                <a href="{{route ('workers.index')}}">Назад</a>
             </div>
-            <div>
-                <a href="{{route ('worker.edit', $worker -> id)}}">Редактировать</a>
-            </div>
-            <div>
-                <form action="{{route('worker.delete', $worker->id)}}" method="post">
-                    @csrf
-                    @method('Delete')
-                    <input type="submit" value="Удалить">
-                </form>
-            </div>
+            @can('update', $worker)
+                <div>
+                    <a href="{{route ('workers.edit', $worker -> id)}}">Редактировать</a>
+                </div>
+            @endcan
+            @can('delete', $worker)
+                <div>
+                    <form action="{{route('workers.destroy', $worker->id)}}" method="post">
+                        @csrf
+                        @method('Delete')
+                        <input type="submit" value="Удалить">
+                    </form>
+                </div>
+            @endcan
         </div>
 </div>
 @endsection
